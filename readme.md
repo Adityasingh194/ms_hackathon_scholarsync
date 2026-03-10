@@ -1,205 +1,135 @@
 # ScholarSync
 
-ScholarSync is a **multi-agent AI academic assistant** designed to automate student academic workflows.  
-It uses **cooperative AI agents orchestrated through LangGraph** to manage assignments, answer questions from academic documents, schedule tasks, and automate communication.
+ScholarSync is a **multi-agent AI academic assistant** that helps students manage assignments, study materials, scheduling, and interview preparation through cooperating AI agents.
 
-Instead of a single chatbot, ScholarSync operates through **multiple specialized AI agents that collaborate autonomously to complete tasks.**
+The system uses **LangGraph-based orchestration**, where multiple specialized agents collaborate to solve tasks such as:
+
+- answering questions from academic documents
+- managing assignments
+- scheduling calendar events
+- sending emails
+- performing web searches
+- conducting AI-based technical interviews
+
+ScholarSync demonstrates how **tool-augmented AI agents can automate academic workflows.**
 
 ---
 
-# Architecture Overview
+# System Architecture
 
-ScholarSync follows a **multi-agent orchestration architecture** where agents cooperate through a central orchestration layer.
+ScholarSync follows a **multi-agent architecture** where agents cooperate through a LangGraph orchestration layer.
 
 ```
 User
  ↓
-Web Interface (Student Portal)
+Web Interface
  ↓
-LangGraph Agent Orchestrator
+LangGraph Agent Graph
  ↓
-------------------------------------
-| Planner Agent                    |
-| Retrieval Agent                  |
-| Tool Agent                       |
-| Interview Agent                  |
-------------------------------------
+-----------------------------------
+Planner Agent
+Retrieval Agent
+Tool Agent
+Interview Agent
+-----------------------------------
  ↓
 MCP Tool Server
  ↓
 External Services
-• Google Drive
-• Calendar API
-• Email Drafting
+• Google Calendar
+• Email
+• Web Search
 • Document Retrieval
 ```
 
-Each agent focuses on a specific responsibility, allowing the system to perform complex workflows autonomously.
+Each agent performs a specialized role while collaborating with other agents to complete complex workflows.
 
 ---
 
-# Core Agents
+# Key Features
 
-## Planner Agent
+### Multi-Agent AI System
+ScholarSync uses multiple agents instead of a single chatbot.  
+Agents collaborate to execute tasks and interact with external tools.
 
-The **Planner Agent** interprets user requests and decides which agents or tools should be used.
+### Document Question Answering
+Users can upload academic documents and ask contextual questions.
 
-Responsibilities:
+### Assignment Intelligence
+Assignments can be fetched, analyzed, and explained using AI.
 
-- Task planning
-- Agent routing
-- Multi-step workflow orchestration
-- Managing agent cooperation
+### Calendar Automation
+The system can create, update, delete, and list events using the Google Calendar API.
 
-Example:
+### Email Automation
+Agents can generate and send emails automatically.
 
-```
-User: Schedule a reminder for the assignment due tomorrow
-```
+### Web Search Tool
+Real-time web search capability integrated as a tool for the agent.
 
-Planner decides to:
-
-1. Fetch assignment data
-2. Send request to Tool Agent
-3. Create calendar event
-
----
-
-## Retrieval Agent
-
-The **Retrieval Agent** handles document intelligence and academic question answering.
-
-Responsibilities:
-
-- Process uploaded PDFs
-- Process assignment documents
-- Process lecture materials
-- Build embeddings
-- Perform vector search
-- Generate contextual answers
-
-Pipeline:
-
-```
-PDF / Document
- ↓
-Text Extraction
- ↓
-Chunking
- ↓
-Embeddings
- ↓
-Vector Store
- ↓
-LLM Retrieval
-```
-
-Example query:
-
-```
-Explain the time complexity of Strassen’s algorithm from my DSA notes.
-```
+### AI Interviewer
+Includes an **AI technical interview module** that simulates coding and conceptual interviews.
 
 ---
 
-## Tool Agent
+# AI Interviewer Module
 
-The **Tool Agent** interacts with external services through the **MCP server**.
+The project includes an **AI Interviewer system** that helps students practice technical interviews.
 
 Capabilities:
 
-- Create calendar events
-- Draft emails
-- Fetch assignments
-- Fetch study materials
-- Automate academic workflows
-
-Example:
-
-```
-User: Schedule my AI assignment submission reminder.
-```
-
-Tool agent calls:
-
-```
-create_calendar_event()
-```
-
----
-
-# AI Interviewer Agent
-
-ScholarSync also includes an **AI Interviewer system** designed to simulate technical interviews for students.
-
-This module demonstrates how **AI agents can conduct interactive evaluations and provide feedback.**
-
-### Capabilities
-
-- Conduct coding interviews
-- Ask behavioral interview questions
-- Evaluate answers
+- Ask technical questions
+- Conduct behavioral interviews
+- Analyze student responses
 - Provide feedback
-- Guide students through problem-solving
+- Simulate interview environments
 
-### Interview Workflow
-
-```
-Student Starts Interview
- ↓
-Interview Agent selects question
- ↓
-Student submits response
- ↓
-LLM evaluates response
- ↓
-Feedback generated
- ↓
-Next question selected
-```
-
-### Example Interaction
+Example interaction:
 
 ```
-AI Interviewer: Explain the difference between BFS and DFS.
+AI Interviewer: What is the difference between BFS and DFS?
 
-Student: BFS explores level by level using a queue...
+Student: BFS explores nodes level by level using a queue.
 
-AI Interviewer Feedback:
-Correct explanation. You may also mention time complexity O(V + E).
+AI Feedback:
+Correct. BFS uses a queue while DFS typically uses a stack or recursion.
 ```
 
-### Planned Enhancements
+Future improvements:
 
-- Real-time coding environment
-- Automatic code evaluation
-- Behavioral interview scoring
-- Difficulty-based question selection
+- coding problem evaluation
+- real-time code execution
+- interview scoring system
+- adaptive difficulty interviews
 
 ---
 
 # MCP Tool Server
 
-The MCP server acts as the **tool execution layer**.
+The MCP server provides **external tools for agents**.
 
-It exposes APIs used by the agents to perform real-world actions.
-
-Tools implemented:
+Available tools:
 
 ```
+calculator
+check_calendar_free
 create_calendar_event
-draft_email
-fetch_assignments
-fetch_study_material
+current_time
+delete_event_by_title
+get_subject_professors
+list_calendar_events
+send_email
+update_event_by_title
+web_search
 ```
 
-Example tool endpoint:
+Example API request:
 
 ```
 POST /tools/create_calendar_event
 ```
 
-Input:
+Input example:
 
 ```
 {
@@ -211,112 +141,136 @@ Input:
 
 ---
 
-# Key Features
+# Sync System
 
-## Multi-Agent AI System
+The sync system periodically fetches academic data and keeps the system updated.
 
-ScholarSync uses **cooperating AI agents** instead of a single chatbot.
+Functions:
 
-Each agent specializes in a task and collaborates to complete complex workflows.
+- fetch assignment data
+- maintain a local database
+- schedule periodic updates
+- synchronize academic information
 
----
+Files:
 
-## Document Question Answering
-
-Students can upload **PDF notes, assignments, and study materials** and ask questions directly.
-
----
-
-## Assignment Intelligence
-
-Automatically fetch assignments and allow **context-aware question answering**.
-
----
-
-## Academic Automation
-
-Automates common student tasks:
-
-- scheduling reminders
-- drafting emails
-- organizing assignments
-
----
-
-## AI Interview Practice
-
-Students can practice:
-
-- technical interview questions
-- behavioral interview questions
-- conceptual explanations
-
-The system provides **feedback and guidance to improve responses.**
+```
+sync/
+fetch_api_data.py
+scheduler.py
+sync_worker.py
+sync_db.json
+```
 
 ---
 
 # Tech Stack
 
-## AI / Agent Framework
-
+### AI Framework
 - LangGraph
 - LangChain
-- Groq API (LLaMA 3 8B)
+- Groq API (LLaMA models)
 
-## Backend
-
+### Backend
 - Python
 - FastAPI
 - MCP Tool Server
 
-## AI Processing
-
-- Vector embeddings
-- Document chunking
+### AI Processing
 - Retrieval Augmented Generation (RAG)
+- Vector embeddings
+- Document parsing
 
-## Integrations
+### Integrations
+- Google Calendar API
+- Email tools
+- Web search APIs
 
-- Google Drive
-- Google Calendar
-- Email automation
-
-## Frontend
-
+### Frontend
 - HTML
 - CSS
 - JavaScript
 
+### AI Interviewer
+- Python backend
+- React frontend
+- Docker support
+
 ---
 
-# Directory Structure
+# Project Structure
 
 ```
-ScholarSync
+LANGGRAPH
 │
-├── agents
-│   ├── planner_agent.py
-│   ├── retrieval_agent.py
-│   ├── tool_agent.py
-│   └── interviewer_agent.py
+├── chatbot
+│   ├── graph.py
+│   ├── llm.py
+│   ├── memory.py
+│   ├── service.py
+│   ├── state.py
+│   ├── threads.py
+│   └── tools.py
 │
 ├── mcp_server
-│   ├── server.py
-│   ├── tools
-│   │   ├── calendar_tool.py
-│   │   ├── email_tool.py
-│   │   └── drive_fetch_tool.py
+│   ├── mcp_server.py
+│   ├── calendar_auth.py
+│   ├── config.py
+│   │
+│   └── tools
+│       ├── calculator.py
+│       ├── check_calendar_free.py
+│       ├── create_calendar_event.py
+│       ├── current_time.py
+│       ├── delete_event_by_title.py
+│       ├── get_subject_professors.py
+│       ├── list_calendar_events.py
+│       ├── send_email.py
+│       ├── update_event_by_title.py
+│       └── web_search.py
 │
-├── vector_store
+├── sync
+│   ├── fetch_api_data.py
+│   ├── scheduler.py
+│   ├── sync_worker.py
+│   └── sync_db.json
 │
-├── frontend
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
+├── ai_interviewer
+│   ├── backend
+│   │   ├── app
+│   │   ├── main.py
+│   │   ├── cv_parser.py
+│   │   ├── requirements.txt
+│   │   └── Dockerfile
+│   │
+│   └── client
+│       ├── public
+│       ├── src
+│       ├── package.json
+│       └── Dockerfile
 │
-├── documents
+├── js
+│   ├── chat.js
+│   ├── main.js
+│   ├── ui.js
+│   ├── history.js
+│   └── sidebar.js
 │
-├── .env
+├── data
+├── generated_pdfs
+│
+├── index.html
+├── scholar_sync.html
+├── assignment_solver.html
+├── analysis.html
+│
+├── chatbot.py
+├── server.py
+├── setup_db.py
+│
+├── styles.css
+├── nstyle.css
+│
 ├── requirements.txt
 └── README.md
 ```
@@ -325,16 +279,16 @@ ScholarSync
 
 # Installation
 
-## Clone Repository
+### Clone Repository
 
 ```
-git clone https://github.com/yourusername/ScholarSync.git
-cd ScholarSync
+git clone https://github.com/yourusername/scholarsync.git
+cd scholarsync
 ```
 
 ---
 
-## Create Virtual Environment
+### Create Virtual Environment
 
 ```
 python -m venv myenv
@@ -356,7 +310,7 @@ source myenv/bin/activate
 
 ---
 
-## Install Dependencies
+### Install Dependencies
 
 ```
 pip install -r requirements.txt
@@ -364,37 +318,33 @@ pip install -r requirements.txt
 
 ---
 
-## Configure Environment Variables
+### Configure Environment Variables
 
-Create `.env`
+Create a `.env` file
 
 ```
 GROQ_API_KEY=your_groq_api_key
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
 ---
 
-## Run MCP Tool Server
+# Running the System
+
+### Start MCP Tool Server
 
 ```
-python mcp_server/server.py
+python mcp_server/mcp_server.py
 ```
 
----
-
-## Run Agent System
+### Start Backend Server
 
 ```
-python main.py
+python server.py
 ```
 
----
+### Open Frontend
 
-## Open Web Interface
-
-Open:
+Open in browser:
 
 ```
 index.html
@@ -402,37 +352,57 @@ index.html
 
 ---
 
+# Running AI Interviewer
+
+Navigate to the AI interviewer folder:
+
+```
+cd ai_interviewer/backend
+pip install -r requirements.txt
+python main.py
+```
+
+For frontend:
+
+```
+cd ai_interviewer/client
+npm install
+npm start
+```
+
+---
+
 # Current Status
 
-### Fully Functional
+Fully Functional
 
-- Multi-agent orchestration
-- Document Q&A
-- Assignment fetching
-- Calendar automation
-- Email drafting
+- multi-agent orchestration
+- document Q&A
+- assignment solver
+- calendar automation
+- email automation
+- web search integration
 
-### Partially Implemented
+Partially Implemented
 
 - AI coding interview environment
-- Behavioral interview interaction pipeline
+- automated interview scoring
 
-### Known Limitations
+Known Limitations
 
-- No authentication layer
-- MCP server acts as centralized tool execution layer
-- AI interviewer evaluation pipeline still under development
+- no authentication system
+- centralized MCP tool execution
+- interview scoring still experimental
 
 ---
 
 # Future Improvements
 
-- Full authentication system
-- Multi-user student portal
-- Advanced AI interview simulation
-- Coding challenge auto-grading
-- Agent memory system
-- Distributed MCP tool architecture
+- authentication and user accounts
+- distributed agent architecture
+- AI coding interview IDE
+- advanced agent memory
+- interview analytics dashboard
 
 ---
 
@@ -444,6 +414,6 @@ MIT License
 
 # Author
 
-Aditya Kumar Singh
+Team:It’sWinTime
 
-AI Systems | Multi-Agent Architectures | Full-Stack Development
+AI Systems • Multi-Agent Architectures • Full-Stack Development
